@@ -9,7 +9,7 @@
 ## 🚀 1 Minute Summary
 Text-to-image (T2I) diffusion models have the issue of information bias and loss. Previous works focus on addressing the issue through the denoising process. However, within T2I models, text encoder is the earlier module than the denoising process but there is no research about how text embeddings affect generated images. 
 
-![](assets/information_loss.png)
+![](assets/information_loss.jpg)
 
 In this paper, we share a comprehensive analysis of text embedding: 
 - How text embedding contributes to the generated images
@@ -17,7 +17,7 @@ In this paper, we share a comprehensive analysis of text embedding:
 
 Accordingly, we propose a simple but effective Text Embedding Balance Optimization method (TEBOpt), which is training-free, with an improvement of 125.42% on information balance in stable diffusion. 
 
-![](assets/TEBOpt_arc.png)
+![](assets/TEBOpt_arc.jpg)
 
 Furthermore, we propose a new automatic evaluation metric that quantifies information loss more accurately than existing methods, achieving 81% concordance with human assessments. This metric effectively measures the presence and accuracy of objects, addressing the limitations of current distribution scores like CLIP’s text-image similarities. 
 
