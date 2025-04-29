@@ -2,111 +2,110 @@
 
 [![arXiv](https://img.shields.io/badge/arXiv-2410.00321-red)](https://arxiv.org/pdf/2410.00321) [![MIT license](https://img.shields.io/badge/License-MIT-blue.svg)](https://github.com/basiclab/Unraveling-Information-Mix-ups/blob/main/LICENSE)
 
-This repo provides the PyTorch source code of our paper.
+## 📝 Overview
 
-> **A Cat Is A Cat (Not A Dog!): Unraveling Information Mix-ups in Text-to-Image Encoders through Causal Analysis and Embedding Optimization (NeurIPS, 2024)** <br>
+This repository contains the PyTorch implementation of our NeurIPS 2024 paper:
+
+> **A Cat Is A Cat (Not A Dog!): Unraveling Information Mix-ups in Text-to-Image Encoders through Causal Analysis and Embedding Optimization** <br>
 > [Chieh-Yun Chen](https://chiehyunchen.github.io/), Chiang Tseng, Li-Wu Tsao, [Hong-Han Shuai](https://basiclab.lab.nycu.edu.tw/)<br>
 > *National Yang Ming Chiao Tung University, Taiwan*
 
+## 🔍 Problem & Solution
 
-## 🚀 1 Minute Summary
-Text-to-image (T2I) diffusion models have the issue of information bias and loss. Previous works focus on addressing the issue through the denoising process. However, within T2I models, text encoder is the earlier module than the denoising process but there is no research about how text embeddings affect generated images. 
+### The Challenge
+Text-to-image (T2I) diffusion models suffer from information bias and loss. While previous works focused on the denoising process, we investigate how text embeddings in the earlier text encoder module affect generated images.
 
-![](assets/information_loss.jpg)
+![Information Loss Illustration](assets/information_loss.jpg)
 
-In this paper, we share a comprehensive analysis of text embedding: 
-- How text embedding contributes to the generated images
-- Why information gets lost and biases towards the first-mentioned object. 
+### Our Contributions
 
-Accordingly, we propose a simple but effective Text Embedding Balance Optimization method (TEBOpt), which is training-free, with an improvement of 125.42% on information balance in stable diffusion. 
+1. **Comprehensive Text Embedding Analysis**
+   - Investigation of text embedding's impact on generated images
+   - Understanding of information loss and first-mentioned object bias
 
-![](assets/TEBOpt_arc.jpg)
+2. **TEBOpt: Text Embedding Balance Optimization**
+   - Training-free solution
+   - 125.42% improvement on information balance in stable diffusion
+   
+   ![TEBOpt Architecture](assets/TEBOpt_arc.jpg)
 
-Furthermore, we propose a new automatic evaluation metric that quantifies information loss more accurately than existing methods, achieving 81% concordance with human assessments. This metric effectively measures the presence and accuracy of objects, addressing the limitations of current distribution scores like CLIP’s text-image similarities. 
+3. **Novel Evaluation Metric**
+   - Automatic quantification of information loss
+   - 81% concordance with human assessments
+   - Better measurement of object presence and accuracy compared to existing methods
 
-## Quick Start!
+## 🚀 Getting Started
 
-### Environment Setup
-```
-$ conda env create -f environment.yml
-$ conda activate TEB
-```
-### Inference
-
-- Test samples with our proposed Text Embedding Balance Optimization
-    ```
-    $ CUDA_VISIBLE_DEVICES=0 python test.py  --text_emb_optimize --indices_to_balance 2,5
-    ```
-- Test samples without our proposed Text Embedding Balance Optimization
-    ```
-    $ CUDA_VISIBLE_DEVICES=0 python test.py
-    ```
-
-### Analysis
-1. Masking token embedding (Table 2)
-    - Unmasked
-        ```
-        $ CUDA_VISIBLE_DEVICES=0 python test.py --data_dir ./data/masking.txt
-        ```
-
-    - Masking all given tokens (tokens index 1:6)
-        ```
-        $ CUDA_VISIBLE_DEVICES=0 python test.py --masking_token_emb --masking_token_index 1,6 --data_dir ./data/masking.txt
-        ```
-
-    - Masking first object (tokens index 1:4)
-        ```
-        $ CUDA_VISIBLE_DEVICES=0 python test.py --masking_token_emb --masking_token_index 1,4 --data_dir ./data/masking.txt
-        ```
-
-    - Masking second object (tokens index 3:6)
-        ```
-        $ CUDA_VISIBLE_DEVICES=0 python test.py --masking_token_emb --masking_token_index 3,6 --data_dir ./data/masking.txt
-        ```
-2. Hypothesis for combined special tokens' pure embeddings (Table 3)
-    ```
-    $ CUDA_VISIBLE_DEVICES=0 python test.py --concat_pure_text_emb
-    ```
-
-3. Calculate text embedding similarity and cross-attention map distance (Table 5 and 6)
-    - Default
-        ```
-        $ CUDA_VISIBLE_DEVICES=0 python test.py --calcaluate_distance
-        ```
-
-    - With Text Embedding Balance Optimization
-        ```
-        $ CUDA_VISIBLE_DEVICES=0 python test.py --calcaluate_distance --text_emb_optimize
-        ```
-
-### Proposed evaluation metric for object mixture/missing (Table 1-4)
-```
-$ cd eval_metrics
-
-# Evaluating the default result
-$ CUDA_VISIBLE_DEVICES=0 python eval.py --src_dir "../result/test_sample"
-
-# Evaluating the optimized result
-$ CUDA_VISIBLE_DEVICES=0 python eval.py --src_dir "../result/test_sample_TEBOpt"
+### Prerequisites
+```bash
+conda env create -f environment.yml
+conda activate TEB
 ```
 
-### Create data
+### Basic Usage
 
+1. **Run Inference**
+   ```bash
+   # With Text Embedding Balance Optimization
+   CUDA_VISIBLE_DEVICES=0 python test.py --text_emb_optimize --indices_to_balance 2,5
+   
+   # Without Optimization
+   CUDA_VISIBLE_DEVICES=0 python test.py
+   ```
+
+## 🔬 Experiments & Analysis
+
+### 1. Token Embedding Analysis (Table 2)
+```bash
+# Unmasked
+CUDA_VISIBLE_DEVICES=0 python test.py --data_dir ./data/masking.txt
+
+# Mask all tokens (1:6)
+CUDA_VISIBLE_DEVICES=0 python test.py --masking_token_emb --masking_token_index 1,6 --data_dir ./data/masking.txt
+
+# Mask first object (1:4)
+CUDA_VISIBLE_DEVICES=0 python test.py --masking_token_emb --masking_token_index 1,4 --data_dir ./data/masking.txt
+
+# Mask second object (3:6)
+CUDA_VISIBLE_DEVICES=0 python test.py --masking_token_emb --masking_token_index 3,6 --data_dir ./data/masking.txt
 ```
-$ cd data
 
-# Please feel free to modify i) the target number of prompts, ii) object number within one prompt and iii) object candidates.
-$ python gen_prompt.py
+### 2. Special Tokens Analysis (Table 3)
+```bash
+CUDA_VISIBLE_DEVICES=0 python test.py --concat_pure_text_emb
 ```
 
-<!-- ## 🙏 Acknowledgements
+### 3. Embedding Similarity Analysis (Tables 5 & 6)
+```bash
+# Default Analysis
+CUDA_VISIBLE_DEVICES=0 python test.py --calcaluate_distance
 
-We are grateful for the code shared by [FPE](https://github.com/alibaba/EasyNLP/tree/master/diffusion/FreePromptEditing) and [SynGen](https://github.com/RoyiRa/Linguistic-Binding-in-Diffusion-Models). Utilizing their resources implies agreement to their respective licenses. Our project benefits from these contributions, and we acknowledge their impact on our work. -->
-
-## 🌟 Citation
-
-If you find our research helpful, we would appreciate that you give it a citation.
+# With TEBOpt
+CUDA_VISIBLE_DEVICES=0 python test.py --calcaluate_distance --text_emb_optimize
 ```
+
+### 4. Object Mixture/Missing Evaluation (Tables 1-4)
+```bash
+cd eval_metrics
+
+# Evaluate Default Results
+CUDA_VISIBLE_DEVICES=0 python eval.py --src_dir "../result/test_sample"
+
+# Evaluate Optimized Results
+CUDA_VISIBLE_DEVICES=0 python eval.py --src_dir "../result/test_sample_TEBOpt"
+```
+
+## 📊 Data Generation
+
+```bash
+cd data
+python gen_prompt.py  # Customize: prompt count, objects per prompt, object candidates
+```
+
+## 📚 Citation
+
+If you find our work useful, please consider citing:
+```bibtex
 @article{Chen_2024_TEBOpt,
   title={A Cat Is A Cat (Not A Dog!): Unraveling Information Mix-ups in Text-to-Image Encoders through Causal Analysis and Embedding Optimization},
   author={Chen, Chieh-Yun and Tseng, Chiang and Tsao, Li-Wu and Shuai, Hong-Han},
