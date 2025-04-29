@@ -1,0 +1,5 @@
+{
+    "animals": ["cat", "dog", "bird", "bear", "lion", "horse", "elephant", "monkey", "frog", "turtle", "rabbit", "mouse", "panda", "zebra", "gorilla", "penguin", "chicken"],
+    "objects": ["backpack", "glasses", "crown", "suitcase", "chair", "balloon", "bow", "car", "bowl", "bench", "clock", "apple"],
+    "adjective": ["red", "orange", "yellow", "green", "blue", "purple", "pink", "brown", "gray", "black", "white"]
+}
