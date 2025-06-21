@@ -1,6 +1,6 @@
 # A Cat Is A Cat (Not A Dog!): Unraveling Information Mix-ups
 
-[![arXiv](https://img.shields.io/badge/arXiv-2410.00321-red)](https://arxiv.org/pdf/2410.00321) [![MIT license](https://img.shields.io/badge/License-MIT-blue.svg)](https://github.com/basiclab/Unraveling-Information-Mix-ups/blob/main/LICENSE)
+[![arXiv](https://img.shields.io/badge/arXiv-2410.00321-red)](https://arxiv.org/pdf/2410.00321) [![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/basiclab/Unraveling-Information-Mix-ups) [![MIT license](https://img.shields.io/badge/License-MIT-blue.svg)](https://github.com/basiclab/Unraveling-Information-Mix-ups/blob/main/LICENSE)
 
 ## 📝 Overview
 
